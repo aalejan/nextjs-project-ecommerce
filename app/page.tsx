@@ -3,16 +3,6 @@ import { Inter } from "next/font/google";
 import Stripe from "stripe";
 import Product from "./components/Product";
 
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  description?: string;
-  quantity?: number;
-  metadata?: string;
-};
-
 const getProducts = async () => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     apiVersion: "2022-11-15",
@@ -41,7 +31,7 @@ export default async function Home() {
   return (
     <main className=''>
       {products.map((product) => (
-        <Product product={product} />
+        <Product {...product} key={product.id} />
       ))}
     </main>
   );
