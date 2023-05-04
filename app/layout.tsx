@@ -21,7 +21,7 @@ export default async function RootLayout({
 
   return (
     <html lang='en'>
-      <body className='mx-64'>
+      <body className='mx-44'>
         <Nav user={session?.user} expires={session?.expires as string} />
         {children}
       </body>

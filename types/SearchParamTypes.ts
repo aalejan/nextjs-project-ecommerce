@@ -5,7 +5,7 @@ type Params = {
 type SearchParams = {
   id: string;
   name: string;
-  price: number | null;
+  unit_amount: number | null;
   image: string;
   description: string | null;
   quantity?: number;

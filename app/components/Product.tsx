@@ -8,12 +8,14 @@ export default function Product({
   image,
   id,
   description,
+  metadata,
 }: ProductType) {
+  const { features } = metadata;
   return (
     <Link
       href={{
         pathname: `/product/${id}`,
-        query: { name, unit_amount, image, id, description },
+        query: { name, unit_amount, image, id, description, features },
       }}
     >
       <div className='text-gray-700'>
