@@ -1,6 +1,7 @@
 "use client";
 
 import { useCartStore } from "@/store";
+import { useState, useEffect } from "react";
 import { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
@@ -10,6 +11,10 @@ import { AiFillShopping } from "react-icons/ai";
 
 export default function Nav({ user }: Session) {
   const cartStore = useCartStore();
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   return (
     <nav className='flex justify-between items-center py-8'>
       <Link href={"/"}>
@@ -44,7 +49,7 @@ export default function Nav({ user }: Session) {
           </li>
         )}
       </ul>
-      {cartStore.isOpen && <Cart />}
+      {isMounted && cartStore.isOpen && <Cart />}
     </nav>
   );
 }
