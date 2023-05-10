@@ -28,7 +28,7 @@ export default function Nav({ user }: Session) {
         >
           <AiFillShopping />
           <span className='bg-teal-700 text-white text-sm font-bold w-5 h-5 rounded-full absolute left-4 bottom-4 flex items-center justify-center'>
-            {cartStore.cart.length}
+            {isMounted && cartStore.cart.length}
           </span>
         </li>
         {/* {If user is not signed in} */}

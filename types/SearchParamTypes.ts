@@ -8,7 +8,7 @@ type SearchParams = {
   unit_amount: number | null;
   image: string;
   description: string | null;
-  quantity?: number;
+  quantity: number | 1;
   features?: string;
 };
 
