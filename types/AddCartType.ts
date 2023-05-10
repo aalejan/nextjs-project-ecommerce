@@ -3,5 +3,5 @@ export type AddCartType = {
   image: string;
   id: string;
   unit_amount: number | null;
-  quantity: number | 1;
+  quantity?: number | 1;
 };
