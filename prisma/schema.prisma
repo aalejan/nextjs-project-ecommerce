@@ -1,25 +1,50 @@
+// This block tells Prisma to generate a client based on the Prisma Client JavaScript library.
 generator client {
     provider = "prisma-client-js"
 }
 
-
+// This block establishes a connection to a Postgres database using a URL stored in an environment variable.
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-
+// This block defines a User model with various fields. Each field represents a column in the 'User' table in your database.
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  stripeCustomerId String?
+  id            String    @id @default(cuid()) 
+  name          String?   
+  email         String?   @unique 
+  emailVerified DateTime? // An optional field to store the timestamp when the email is verified.
+  image         String?   // An optional field to store the user's profile picture.
+  accounts      Account[] // This represents a one-to-many relation between User and Account. One user can have multiple accounts.
+  sessions      Session[] // This represents a one-to-many relation between User and Session. One user can have multiple sessions.
+  stripeCustomerId String? // An optional field to store the Stripe customer ID associated with the user.
+  orders Order[] // This represents a one-to-many relation between User and Order. One user can have multiple orders.
 }
 
+// This block defines an Order model with various fields.
+model Order{
+  id String @id @default(cuid()) 
+  user User @relation(fields: [userId], references: [id]) // This sets up a many-to-one relation with User. Each order can belong to one user.
+  userId String // This field stores the ID of the User that the Order is associated with.
+  amount Float
+  currency String
+  status String
+  createdDate DateTime @default(now())
+  paymentIntentID String?  @unique
+  products Product[] //// This represents a many-to-many relation between Order and Product. One order can have multiple products.
+}
+
+// This block defines a Product model with various fields.
+model Product {
+  id String @id @default(cuid()) 
+  name String 
+  description String? 
+  unit_amount Float 
+  image String? 
+  quantity Float @default(0) 
+  orders Order[] // This represents a many-to-many relation between Product and Order. One product can be part of multiple orders.
+}
 
 model Account {
   id                 String  @id @default(cuid())
