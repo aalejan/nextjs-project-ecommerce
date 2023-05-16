@@ -44,13 +44,13 @@ export default async function handler(
     //create product records that are related to order
     products: {
       //create method to create new Product and establish relation to Order
-      create: items.map((item) => {
-        name: item.name;
-        description: item.description || null;
-        quantity: item.quantity;
-        image: item.image;
-        unit_amount: parseFloat(item.unit_amount);
-      }),
+      create: items.map((item) => ({
+        name: item.name,
+        description: item.description || null,
+        quantity: item.quantity,
+        image: item.image,
+        unit_amount: parseFloat(item.unit_amount),
+      })),
     },
   };
 
@@ -81,13 +81,13 @@ export default async function handler(
           amount: calculateOrderAmount(items),
           products: {
             deleteMany: {},
-            create: items.map((item) => {
-              name: item.name;
-              description: item.description || null;
-              quantity: item.quantity;
-              image: item.image;
-              unit_amount: parseFloat(item.unit_amount);
-            }),
+            create: items.map((item) => ({
+              name: item.name,
+              description: item.description || null,
+              unit_amount: parseFloat(item.unit_amount),
+              image: item.image,
+              quantity: item.quantity,
+            })),
           },
         },
       });

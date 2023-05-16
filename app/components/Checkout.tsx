@@ -5,6 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useCartStore } from "@/store";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import CheckoutForm from "./CheckoutForm";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -13,6 +14,7 @@ const stripePromise = loadStripe(
 export default function Checkout() {
   const cartStore = useCartStore();
   const router = useRouter();
+  //The client secret can be used to complete a payment from your frontend.
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
@@ -35,9 +37,27 @@ export default function Checkout() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        setClientSecret(data.paymentIntent.client_secret);
+        cartStore.setPaymentIntent(data.paymentIntent.id);
       });
   }, []);
 
-  return <h1>Checkout</h1>;
+  const options: StripeElementsOptions = {
+    clientSecret,
+    appearance: {
+      theme: "stripe",
+      labels: "floating",
+    },
+  };
+  return (
+    <div>
+      {clientSecret && (
+        <div>
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm clientSecret={clientSecret} />
+          </Elements>
+        </div>
+      )}
+    </div>
+  );
 }
