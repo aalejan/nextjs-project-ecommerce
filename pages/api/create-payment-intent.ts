@@ -30,6 +30,7 @@ export default async function handler(
   }
 
   //Data from req.body
+  //payment_intent always starts as empty string until user checks out
   const { items, payment_intent_id } = req.body;
 
   //order data that will be sent to Server
@@ -39,16 +40,16 @@ export default async function handler(
     amount: calculateOrderAmount(items),
     currency: "usd",
     status: "pending",
-    paymnetIntentId: payment_intent_id,
+    paymentIntentID: payment_intent_id,
     //create product records that are related to order
     products: {
       //create method to create new Product and establish relation to Order
       create: items.map((item) => {
         name: item.name;
-        description: item.description;
+        description: item.description || null;
         quantity: item.quantity;
         image: item.image;
-        unit_amount: item.unit_amount;
+        unit_amount: parseFloat(item.unit_amount);
       }),
     },
   };
@@ -82,15 +83,16 @@ export default async function handler(
             deleteMany: {},
             create: items.map((item) => {
               name: item.name;
-              description: item.description;
+              description: item.description || null;
               quantity: item.quantity;
               image: item.image;
-              unit_amount: item.unit_amount;
+              unit_amount: parseFloat(item.unit_amount);
             }),
           },
         },
       });
       res.status(200).json({ paymentIntent: updated_intent });
+      return;
     }
   } else {
     //create new order with prisma
@@ -101,14 +103,13 @@ export default async function handler(
         enabled: true,
       },
     });
-    orderData.paymnetIntentId = paymentIntent.id;
+    orderData.paymentIntentID = paymentIntent.id;
 
     const newOrder = await prisma.order.create({
       data: orderData,
     });
+    res.status(200).json({ paymentIntent });
   }
-
-  res.status(200).json({ userSession });
 
   return;
 }

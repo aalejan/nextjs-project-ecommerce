@@ -30,7 +30,7 @@ export default function Checkout() {
       .then((res) => {
         //set client secret
         if (res.status === 403) {
-          return router.push("/api/auth/login");
+          return router.push("/api/auth/signin");
         }
         return res.json();
       })
