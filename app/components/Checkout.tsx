@@ -47,6 +47,9 @@ export default function Checkout() {
     appearance: {
       theme: "stripe",
       labels: "floating",
+      variables: {
+        spacingUnit: "2px",
+      },
     },
   };
   return (
