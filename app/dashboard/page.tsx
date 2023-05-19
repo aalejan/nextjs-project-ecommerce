@@ -5,6 +5,8 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import formatPrice from "@/utils/PriceFormat";
 import Image from "next/image";
 
+export const revalidate = 0;
+
 const fetchOrders = async () => {
   const prisma = new PrismaClient();
   const user = getServerSession(authOptions);
@@ -12,7 +14,7 @@ const fetchOrders = async () => {
     return null;
   }
   const orders = await prisma.order.findMany({
-    where: { id: user?.user?.id },
+    where: { id: user?.user?.id, status: "complete" },
     include: {
       products: true,
     },
@@ -36,9 +38,11 @@ export default async function Dashboard() {
     <div>
       <div className='font-medium'>
         {userOrders.map((order) => (
-          <div key={order.id} className='rounded-lg p-8 my-12'>
-            <h2>Order reference: {order.id}</h2>
-            <p>Order placed on: {new Date(order.createdDate).toString()}</p>
+          <div key={order.id} className='rounded-lg p-8 my-4 space-y-2'>
+            <h2 className='text-sm font-medium'>Order reference: {order.id}</h2>
+            <p className='text-sm'>
+              Order placed on: {new Date(order.createdDate).toString()}
+            </p>
             <p className='text-md py-2'>
               Status:{" "}
               <span
@@ -50,9 +54,9 @@ export default async function Dashboard() {
               </span>
             </p>
             <p className='font-medium'>Total: {formatPrice(order.amount)}</p>
-            <div className='flex gap-8'>
+            <div className='text-sm lg:flex items-center gap-4'>
               {order.products.map((product) => (
-                <div className='py-2' key={product.id}>
+                <div className='py-2 ' key={product.id}>
                   <h2 className='py-2'>{product.name}</h2>
                   <div className='flex items-center gap-4'>
                     <Image
