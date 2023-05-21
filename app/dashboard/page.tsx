@@ -9,12 +9,13 @@ export const revalidate = 0;
 
 const fetchOrders = async () => {
   const prisma = new PrismaClient();
-  const user = getServerSession(authOptions);
+  const user = await getServerSession(authOptions);
+
   if (!user) {
     return null;
   }
   const orders = await prisma.order.findMany({
-    where: { id: user?.user?.id, status: "complete" },
+    where: { userId: user?.user?.id, status: "complete" },
     include: {
       products: true,
     },
@@ -24,6 +25,7 @@ const fetchOrders = async () => {
 
 export default async function Dashboard() {
   const userOrders = await fetchOrders();
+  console.log(userOrders);
   if (userOrders === null) {
     return <div>You need to be logged in to view your orders</div>;
   }
@@ -38,7 +40,10 @@ export default async function Dashboard() {
     <div>
       <div className='font-medium'>
         {userOrders.map((order) => (
-          <div key={order.id} className='rounded-lg p-8 my-4 space-y-2'>
+          <div
+            key={order.id}
+            className='rounded-lg p-8 my-4 space-y-2 bg-base-300'
+          >
             <h2 className='text-sm font-medium'>Order reference: {order.id}</h2>
             <p className='text-sm'>
               Order placed on: {new Date(order.createdDate).toString()}

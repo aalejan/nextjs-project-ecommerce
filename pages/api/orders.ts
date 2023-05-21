@@ -1,4 +1,3 @@
-import Stripe from "stripe";
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";

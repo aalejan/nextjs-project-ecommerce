@@ -32,7 +32,7 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang='en'>
+    <html lang='en' data-theme='light'>
       <body className={`mx-4 lg:mx-44 ${roboto.className} `}>
         <Nav user={session?.user} expires={session?.expires as string} />
         {children}

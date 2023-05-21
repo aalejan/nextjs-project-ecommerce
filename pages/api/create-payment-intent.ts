@@ -33,6 +33,9 @@ export default async function handler(
   //payment_intent always starts as empty string until user checks out
   const { items, payment_intent_id } = req.body;
 
+  const userId = userSession?.user?.id;
+  const userConnect = userId ? { connect: { id: userId } } : undefined;
+
   //order data that will be sent to Server
   const orderData = {
     //connect the order to user in current session
