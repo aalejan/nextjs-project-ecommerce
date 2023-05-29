@@ -31,6 +31,7 @@ export default function Cart() {
         onClick={(e) => e.stopPropagation()}
         className='bg-white absolute right-0 top-0 w-full lg:w-1/3 h-screen p-10 overflow-scroll '
       >
+        {/* determine what function the button has based if user is in cart or checkout */}
         {cartStore.onCheckout === "cart" && (
           <button
             onClick={() => cartStore.toggleCart()}
@@ -50,6 +51,7 @@ export default function Cart() {
 
         {cartStore.onCheckout === "cart" && (
           <>
+            {/* render cart items in cart */}
             {cartStore.cart.map((item) => (
               <motion.div layout key={item.id} className='flex py-4 gap-4'>
                 <Image

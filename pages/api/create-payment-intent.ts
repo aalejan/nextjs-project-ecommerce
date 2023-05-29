@@ -3,13 +3,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "./auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { AddCartType } from "@/types/AddCartType";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/utils/prisma";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2022-11-15",
 });
-
-const prisma = new PrismaClient();
 
 const calculateOrderAmount = (items: AddCartType[]) => {
   const total = items.reduce(
@@ -26,7 +24,7 @@ export default async function handler(
   //Getting user
   const userSession = await getServerSession(req, res, authOptions);
   if (!userSession?.user) {
-    res.status(403).json({ error: "Not logged in" });
+    return res.status(403).json({ error: "Not logged in" });
   }
 
   //Data from req.body
