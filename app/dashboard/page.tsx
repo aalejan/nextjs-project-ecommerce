@@ -6,9 +6,8 @@ import formatPrice from "@/utils/PriceFormat";
 import Image from "next/image";
 
 export const revalidate = 0;
-
+const prisma = new PrismaClient();
 const fetchOrders = async () => {
-  const prisma = new PrismaClient();
   const user = await getServerSession(authOptions);
 
   if (!user) {

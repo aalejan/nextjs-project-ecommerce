@@ -11,6 +11,10 @@ module.exports = {
         //puts product in grid and auto-fills. make sure when  products are smaller than 15rem then fit on one row
         fluid: "repeat(auto-fit, minmax(15rem, 1fr))",
       },
+      fontFamily: {
+        lobster: [`var(--font-lobster)`],
+        roboto: [`var(--font-roboto)`],
+      },
     },
   },
   plugins: [require("daisyui")],

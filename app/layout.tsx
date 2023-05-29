@@ -33,7 +33,7 @@ export default async function RootLayout({
 
   return (
     <html lang='en' data-theme='light'>
-      <body className={`mx-4 lg:mx-44 ${roboto.className} `}>
+      <body className={`mx-4 lg:mx-44 ${roboto.variable} ${lobster.variable} `}>
         <Nav user={session?.user} expires={session?.expires as string} />
         {children}
       </body>
