@@ -15,6 +15,7 @@ export default function Nav({ user }: Session) {
   const [isMounted, setIsMounted] = useState(false);
 
   const dropdownHandler = () => {
+    signOut();
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
@@ -50,7 +51,7 @@ export default function Nav({ user }: Session) {
         {/* {If user is not signed in} */}
         {!user && (
           <li className='bg-teal-600 text-white py-2 px-4 rounded-md'>
-            <button onClick={() => signIn}>Sign in</button>
+            <button onClick={() => signIn()}>Sign in</button>
           </li>
         )}
         {user && (
@@ -72,7 +73,6 @@ export default function Nav({ user }: Session) {
                   className='hover:bg-base-300 p-4 rounded-md'
                   href={"/dashboard"}
                   onClick={() => {
-                    signOut();
                     if (document.activeElement instanceof HTMLElement) {
                       document.activeElement.blur();
                     }
